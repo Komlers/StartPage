@@ -1,7 +1,9 @@
-/* This file is used to style the Start Page */
+/* ============================================================
+   Dan_Evan's Start Page - Stylesheet
+   ============================================================ */
 
 body {
-    font-family: "MiSans";
+    font-family: "MiSans", sans-serif;
     margin: 20px 10px;
     padding: 0;
     background-color: rgb(65, 65, 65);
@@ -13,63 +15,17 @@ body {
 
 @media (max-width: 720px) {
     body {
-        font-family: "MiSans";
-        margin: 20px 10px;
-        padding: 0;
-        background-color: rgb(65, 65, 65);
         background-image: url(img/bg2.jpg);
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
     }
 }
 
-hr {
-    background-color: #448AFF;
-    max-width: 350px;
-    height: 2px;
-    border: none;
-}
+/* ==================== Title Section ==================== */
 
-details {
-    margin-left: 10px;
-}
-
-details p {
-    color: black;
-    margin: 0;
-}
-
-summary {
-    outline: none;
-}
-
-a, a:visited {
-    color: #5394c2;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #406ce4;
-    text-decoration: underline;
-}
-
-.title-prt {
+.title-section {
     display: flex;
-    flex-direction: column; /* 改为垂直方向排列 */
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.start {
-    font-size: 14px;
-    padding: 1px 100px;
-    color: rgb(229, 219, 109);
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    max-width: 300px; /* 根据需要调整最大宽度 */
-    font-family: "MiSans Bold";
 }
 
 .title {
@@ -79,47 +35,244 @@ a:hover {
     padding: 10px 0;
 }
 
-.lang {
-    text-align: right;
-    margin-right: 10px;
-}
-.lang a,.lang a:visited,.lang a:hover,.lang a:active {
-    color:burlywood;
-    text-decoration: none;
-}
+/* ==================== Search Section ==================== */
 
-.container {
-    width: 100%;
-    max-width: 900px; /* 根据需要调整最大宽度 */
-    margin: 5px auto; /* 使.container整体居中 */
-    box-sizing: border-box;
+.search {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-}
-
-.main {
-    max-width: 500px; /* 根据需要调整最大宽度 */
     margin: 0 auto;
-    padding: 20px;
+    width: 100%;
+    max-width: 640px;
+    box-sizing: border-box;
 }
 
-.float-left {
+.search-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 999px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    padding: 6px;
+    width: 100%;
+    max-width: 640px;
+    box-sizing: border-box;
+    transition: box-shadow 0.3s, background 0.3s;
+    position: relative;
+}
+
+.search-container:focus-within {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: none;
+    border-radius: 999px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.85);
     flex: 1;
-    margin: 10px 5px;
-    max-width: 300px; /* 根据需要调整最大宽度 */
+    margin-right: 8px;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.header {
-    padding: 5px;
-    text-align: center;
+.search-box:focus-within {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 0 0 2px rgba(68, 138, 255, 0.3);
 }
 
-.header-prt {
+/* Custom Select: hide native arrow and use custom icon */
+.search-select-wrapper {
+    position: relative;
+    margin: 4px 8px;
+    width: 72px;
+    flex-shrink: 0;
+}
+
+.search-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    height: 38px;
+    padding: 0 22px 0 12px;
+    background: linear-gradient(135deg, rgba(255, 228, 196, 0.9), rgba(255, 215, 175, 0.9));
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    font-family: "MiSans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: #5a4636;
+    text-align: left;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+}
+
+.search-select:hover {
+    background: linear-gradient(135deg, rgba(255, 237, 215, 0.95), rgba(255, 225, 190, 0.95));
+    transform: scale(1.02);
+}
+
+.search-select:focus {
+    box-shadow: 0 0 0 2px rgba(68, 138, 255, 0.4);
+    outline: none;
+}
+
+.search-select-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    transform: translateY(-50%);
+    width: 11px;
+    height: 11px;
+    background-image: url('icon/res/down.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    pointer-events: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.search-select-wrapper:hover::after {
+    opacity: 1;
+}
+
+.search-select option {
+    padding: 10px;
+    color: #333;
+    background-color: #fff;
+}
+
+.search-select option:checked {
+    background-color: #448AFF;
+    color: #fff;
+}
+
+.search-input {
+    border: none;
+    padding: 12px 16px;
+    outline: none;
+    width: 100%;
+    flex: 1;
+    font-family: "MiSans", sans-serif;
+    font-size: 15px;
+    color: #333;
+    background: transparent;
+    transition: color 0.2s;
+}
+
+.search-input::placeholder {
+    color: #999;
+    font-weight: 300;
+}
+
+.search-button {
+    background: linear-gradient(135deg, #448AFF, #2979ff);
+    color: white;
+    margin: 4px 8px 4px 4px;
+    border-radius: 999px;
+    height: 38px;
+    width: 42px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s, transform 0.15s, box-shadow 0.3s;
+    flex-shrink: 0;
+}
+
+.search-button:hover {
+    background: linear-gradient(135deg, #2979ff, #1565c0);
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba(68, 138, 255, 0.4);
+}
+
+.search-button:active {
+    transform: scale(0.95);
+}
+
+/* Search Suggestions Dropdown (floating) */
+.search-suggestions {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    max-height: 320px;
+    overflow-y: auto;
+    display: none;
+    padding: 4px 0 4px;
+}
+
+.search-suggestions.active {
+    display: block;
+}
+
+.search-suggestions .suggestion-item {
+    padding: 10px 24px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 14px;
+    transition: background 0.12s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.search-suggestions .suggestion-item::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background-image: url('icon/res/search.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    flex-shrink: 0;
+    filter: brightness(10);
+}
+
+.search-suggestions .suggestion-item:hover,
+.search-suggestions .suggestion-item.active {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.search-suggestions .suggestion-item:last-child {
+    border-radius: 0 0 16px 16px;
+}
+
+/* ==================== Header / Profile Section ==================== */
+
+.header-section {
     margin: 5px auto;
     width: 100%;
     max-width: 260px;
     box-sizing: border-box;
+    text-align: center;
+}
+
+.header {
+    padding: 5px;
     text-align: center;
 }
 
@@ -140,253 +293,31 @@ a:hover {
     padding: 5px;
 }
 
-.centerpst {
-    text-align: center;
-}
+/* ==================== Card (Info Block) ==================== */
 
-.centerpst .button {
-    color: white;
-    text-decoration: none;
-}
-
-.centerpst .button:hover {
-    color: white;
-}
-
-.dttm {
-    color:chocolate;
-    font-size: 18px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding: 5px;
-    background-color: #f2f2f2;
-    display: inline-block;
-    text-align: left;
-    margin-right: 10px;
-    border-radius: 10px;
-}
-
-.tools-prt {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    margin: 5px auto;
-    width: 100%;
-    max-width: 900px;
-    box-sizing: border-box;
-    text-align: left;
-}
-
-.tools {
-    text-align: left;
-    padding: 10px;
-}
-
-.tools h2 {
-    margin: 5px 0;
-    color: blueviolet;
-    font-size: 30px;
-}
-
-.info-prt {
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    margin: 5px auto;
-    width: 100%;
-    max-width: 260px;
-    box-sizing: border-box;
-    text-align: left;
-}
-
-.info {
-    text-align: left;
-    padding: 10px;
-}
-
-.info h2 {
-    margin: 5px 0;
-    color: rgb(197, 76, 168);
-    font-size: 30px;
-    text-align: left;
-}
-
-.info ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-.info ul li {
-    margin: 7px 0;
-}
-
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: rgb(121, 164, 99);
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    margin: 5px;
-}
-
-.button:hover {
-    background-color: rgb(228, 191, 142);
-}
-
-.btprt a, .btprt a:hover, .btprt a:visited {
-    color: white !important;
-    text-decoration: none !important;
-    font-weight: bold !important;
-}
-
-.search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0px auto;
-    width: 100%;
-    max-width: 600px; /* 根据需要调整最大宽度 */
-    box-sizing: border-box;
-}
-
-.search-container {
-    display: flex;
-    margin: 20px 0;
-    background-color: rgba(255, 255, 255, 0.7);
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    padding: 5px;
-    width: 100%;
-    max-width: 600px; /* 根据需要调整最大宽度 */
-    box-sizing: border-box;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    overflow: hidden;
-    background-color: #fff;
-    flex: 1;
-    margin-right: 10px;
-}
-
-.search-select {
-    margin: 5px 10px;
-    width: 60px;
-    background-color: rgb(255, 228, 196);
-    border-radius: 20px;
-    height: 35px;
-    text-align: center;
-    border: none;
-}
-
-.search-select:hover {
-    background-color: rgb(255, 237, 215); /* 鼠标悬停时改变背景颜色 */
-}
-
-.search-select:focus {
-    border-color: #66afe9; /* 聚焦时改变边框颜色 */
-    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6); /* 聚焦时添加阴影效果 */
-}
-
-.search-select option {
-    padding: 8px;
-    color: #333;
-    background-color: #f9f9f9; /* 默认背景颜色 */
-}
-
-.search-select option:hover {
-    background-color: #e9e9e9; /* 鼠标悬停时的背景颜色 */
-}
-
-.search-select option:checked {
-    background-color: #66afe9; /* 选中时的背景颜色 */
-    color: #fff; /* 选中文本的颜色 */
-}
-
-.search-input {
-    border: none;
-    padding: 10px;
-    outline: none;
-    width: 100%;
-    flex: 1;
-    font-family: "MiSans";
-}
-
-.search-button {
-    background-color: #0078D7;
-    color: white;
-    margin: 5px 10px;
-    border-radius: 15px;
-    height: 35px;
-    width: 40px;
-    border: none; /* 修正边框样式 */
-}
-
-.search-button:hover {
-    background-color: #005a9e;
-}
-
-.frdlnk-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 20px auto;
-    width: 100%;
-    max-width: 800px; /* 根据需要调整最大宽度 */
-    box-sizing: border-box;
-}
-
-.frdlnkdivs {
-    background-color: rgba(255, 255, 255, 0.4);
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    max-width: 120px; /* 根据需要调整最大宽度 */
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.frdlnkdivs img {
-    width: 60px;
-    margin-bottom: 5px;
-}
-
-.frdlnkdivs a {
-    color: rgb(219, 224, 184) !important;
-    text-decoration: none !important;
-}
-
-.block-divs {
-    transition: transform 0.5s;
+.card {
+    background-color: rgba(220, 223, 255, 0.8);
     border-radius: 10px;
     padding: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     max-width: 350px;
     margin: auto;
+    transition: transform 0.5s;
 }
 
-.block-divs:hover {
+.card:hover {
     transform: scale(1.02);
 }
 
-.block-divs h2 {
-    font-size:20; 
-    color:lightseagreen;
+.center-content {
+    text-align: center;
 }
 
-.dttm {
+/* ==================== DateTime & Words ==================== */
+
+.datetime {
     color: chocolate;
-    font-size: 20px;
+    font-size: 18px;
     margin: 3px 0;
     padding: 5px;
     background-color: #f2f2f2;
@@ -401,22 +332,254 @@ a:hover {
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 5px;
-    display: inline-block; 
+    display: inline-block;
     text-align: left;
-    margin-right: 10px;
     border-radius: 10px;
     background-color: rgb(209, 243, 255);
 }
 
-.words a, .words a:hover, .words a:visited {
+.words a,
+.words a:hover,
+.words a:visited {
     display: block;
     width: 100%;
-    color:coral;
+    color: coral;
     text-decoration: none;
     text-align: center;
 }
 
+/* ==================== Layout ==================== */
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 5px auto;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.float-left {
+    flex: 1;
+    margin: 10px 5px;
+    max-width: 300px;
+}
+
+.main {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ==================== Quick Links ==================== */
+
+.quick-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+.quick-link-item {
+    background-color: rgba(255, 255, 255, 0.4);
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 120px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+}
+
+.quick-link-item img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 5px;
+    object-fit: contain;
+}
+
+.quick-link-item a {
+    color: rgb(219, 224, 184) !important;
+    text-decoration: none !important;
+    word-break: break-all;
+}
+
+/* Link Delete Button */
+.link-delete-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background-color: #e74c3c;
+    color: white;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.quick-link-item.editing .link-delete-btn {
+    display: flex;
+}
+
+/* Pencil Edit Button (fixed top-right) */
+.edit-btn {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 10000;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+    color: #555;
+}
+
+.edit-btn:hover {
+    background-color: rgba(255, 255, 255, 0.95);
+    transform: scale(1.1);
+}
+
+.edit-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+/* Add Link Form - Modal Overlay */
+.link-add-form {
+    display: none;
+}
+
+.link-add-form.show {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.link-add-form .modal-box {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 24px 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.link-add-form input {
+    margin: 4px;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-family: "MiSans", sans-serif;
+    width: calc(100% - 24px);
+    max-width: 360px;
+    box-sizing: border-box;
+}
+
+.link-add-form .form-actions {
+    margin-top: 8px;
+}
+
+.link-add-form .form-actions button {
+    margin: 0 4px;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "MiSans", sans-serif;
+}
+
+.btn-save {
+    background-color: #27ae60;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #95a5a6;
+    color: white;
+}
+
+.btn-reset {
+    background-color: #e67e22;
+    color: white;
+}
+
+/* ==================== Separator ==================== */
+
+hr {
+    background-color: #448AFF;
+    max-width: 350px;
+    height: 2px;
+    border: none;
+}
+
+/* ==================== Base Links ==================== */
+
+a, a:visited {
+    color: #5394c2;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #406ce4;
+    text-decoration: underline;
+}
+
+/* ==================== Footer ==================== */
+
 .footer {
     text-align: center;
     color: white;
+}
+
+/* ==================== Custom Tooltip ==================== */
+
+#tooltip {
+    display: none;
+    position: fixed;
+    z-index: 999999;
+    padding: 6px 14px;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #fff;
+    font-size: 13px;
+    font-family: "MiSans", sans-serif;
+    border-radius: 8px;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    transform: translate(10px, 8px);
+    transition: opacity 0.15s;
+}
+
+#tooltip.show {
+    display: block;
 }
