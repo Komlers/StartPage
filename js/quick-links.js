@@ -52,7 +52,7 @@
         link.icon +
         '" alt="' +
         link.name +
-        '" loading="lazy" />' +
+        '" loading="lazy" onerror="this.src=\'icon/res/link.svg\'" />' +
         '<br />' +
         '<a href="' +
         link.url +
@@ -164,12 +164,35 @@
       url = 'https://' + url;
     }
 
-    var icon = iconInput.value.trim() || 'icon/res/link.svg';
+    var icon = iconInput.value.trim();
+    // If no icon provided, use faviconsnap API to auto-fetch
+    if (!icon) {
+      icon = 'https://faviconsnap.com/api/favicon?url=' + encodeURIComponent(url);
+    }
 
-    addLink(name, url, icon);
-
-    nameInput.value = '';
-    urlInput.value = '';
-    iconInput.value = '';
+    // Test icon loading with 5000ms timeout, use default on failure
+    var img = new Image();
+    var timeoutId = setTimeout(function () {
+      img.src = ''; // cancel loading
+      addLink(name, url, 'icon/res/link.svg');
+      iconInput.value = '';
+      nameInput.value = '';
+      urlInput.value = '';
+    }, 5000);
+    img.onload = function () {
+      clearTimeout(timeoutId);
+      addLink(name, url, icon);
+      iconInput.value = '';
+      nameInput.value = '';
+      urlInput.value = '';
+    };
+    img.onerror = function () {
+      clearTimeout(timeoutId);
+      addLink(name, url, 'icon/res/link.svg');
+      iconInput.value = '';
+      nameInput.value = '';
+      urlInput.value = '';
+    };
+    img.src = icon;
   };
 })();
