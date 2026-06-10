@@ -80,10 +80,13 @@
         </div>
     </div>
 
-    <!-- ==================== Edit Button (Pencil Icon, top-right) ==================== -->
-    <button class="edit-btn" id="link-edit-toggle" onclick="linkManager.toggleEdit()" title="编辑快捷链接">
-        <img src="icon/res/edit.svg" alt="编辑图标" />
-    </button>
+    <!-- ==================== Edit Buttons (top-right) ==================== -->
+    <div class="edit-btn-group">
+        <button class="edit-btn" id="link-edit-toggle" onclick="linkManager.toggleEdit()" title="编辑快捷链接">
+            <img src="icon/res/edit.svg" alt="编辑图标" />
+        </button>
+        <button class="done-btn" id="link-done-btn" onclick="linkManager.exitEdit()" title="完成编辑" style="display:none;">完成</button>
+    </div>
 
     <!-- ==================== Quick Links (Customizable) ==================== -->
     <div class="main">
@@ -97,8 +100,9 @@
                 <input type="text" id="new-link-icon" placeholder="图标URL（可选，默认自动填充）" />
                 <div class="form-actions">
                     <button class="btn-save" onclick="submitNewLink()">添加</button>
+                    <button class="btn-delete" onclick="linkManager.closeFormOnly()">删除图标</button>
+                    <button class="btn-reset" onclick="linkManager.reset()">重置链接</button>
                     <button class="btn-cancel" onclick="linkManager.close()">取消</button>
-                    <button class="btn-reset" onclick="linkManager.reset()">恢复默认</button>
                 </div>
             </div>
         </div>
@@ -115,7 +119,6 @@
 
     <!-- ==================== Scripts ==================== -->
     <div id="tooltip"></div>
-    <script src="js/click_effect.js"></script>
     <script src="js/quick-links.js"></script>
     <script src="js/main.js"></script>
 </body>

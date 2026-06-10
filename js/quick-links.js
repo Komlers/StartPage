@@ -36,6 +36,58 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
   }
 
+  // ==================== Drag & Drop Sorting ====================
+
+  var dragSrcIndex = null;
+
+  function onDragStart(e) {
+    dragSrcIndex = parseInt(e.target.closest('.quick-link-item').getAttribute('data-index'), 10);
+    e.dataTransfer.effectAllowed = 'move';
+    e.target.closest('.quick-link-item').classList.add('dragging');
+  }
+
+  function onDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    var target = e.target.closest('.quick-link-item');
+    if (target) target.classList.add('drag-over');
+  }
+
+  function onDrop(e) {
+    e.preventDefault();
+    var target = e.target.closest('.quick-link-item');
+    if (!target) return;
+    var dragTargetIndex = parseInt(target.getAttribute('data-index'), 10);
+    if (dragSrcIndex === null || dragSrcIndex === dragTargetIndex) return;
+
+    var links = loadLinks();
+    var item = links.splice(dragSrcIndex, 1)[0];
+    links.splice(dragTargetIndex, 0, item);
+    saveLinks(links);
+    renderLinks(links);
+    restoreEditingState();
+  }
+
+  function onDragEnd(e) {
+    var el = e.target.closest('.quick-link-item');
+    if (el) el.classList.remove('dragging');
+    var items = document.querySelectorAll('.quick-link-item');
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.remove('drag-over');
+    }
+    dragSrcIndex = null;
+  }
+
+  function restoreEditingState() {
+    if (isEditing) {
+      var items = document.querySelectorAll('.quick-link-item');
+      for (var i = 0; i < items.length; i++) {
+        items[i].classList.add('editing');
+        items[i].draggable = true;
+      }
+    }
+  }
+
   function renderLinks(links) {
     var container = document.getElementById('quick-links');
     if (!container) return;
@@ -44,6 +96,8 @@
       var link = links[i];
       var div = document.createElement('div');
       div.className = 'quick-link-item';
+      if (isEditing) div.draggable = true;
+      div.setAttribute('data-index', i);
       div.innerHTML =
         '<button class="link-delete-btn" onclick="linkManager.delete(' +
         i +
@@ -59,6 +113,11 @@
         '" target="_blank">' +
         link.name +
         '</a>';
+      // Drag events for sorting
+      div.addEventListener('dragstart', onDragStart);
+      div.addEventListener('dragover', onDragOver);
+      div.addEventListener('drop', onDrop);
+      div.addEventListener('dragend', onDragEnd);
       container.appendChild(div);
     }
   }
@@ -75,14 +134,40 @@
     isEditing = !isEditing;
     var items = document.querySelectorAll('.quick-link-item');
     var form = document.getElementById('link-add-form');
+    var doneBtn = document.getElementById('link-done-btn');
 
     for (var i = 0; i < items.length; i++) {
       items[i].classList.toggle('editing', isEditing);
+      items[i].draggable = isEditing;
     }
 
     if (form) {
       form.classList.toggle('show', isEditing);
     }
+
+    if (doneBtn) {
+      doneBtn.style.display = isEditing ? 'inline-block' : 'none';
+    }
+  }
+
+  function closeForm() {
+    var form = document.getElementById('link-add-form');
+    if (form) form.classList.remove('show');
+  }
+
+  function exitEditMode() {
+    isEditing = false;
+    var items = document.querySelectorAll('.quick-link-item');
+    var form = document.getElementById('link-add-form');
+    var doneBtn = document.getElementById('link-done-btn');
+
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.remove('editing');
+      items[i].draggable = false;
+    }
+
+    if (form) form.classList.remove('show');
+    if (doneBtn) doneBtn.style.display = 'none';
   }
 
   function deleteLink(index) {
@@ -91,12 +176,7 @@
     links.splice(index, 1);
     saveLinks(links);
     renderLinks(links);
-    if (isEditing) {
-      var items = document.querySelectorAll('.quick-link-item');
-      for (var i = 0; i < items.length; i++) {
-        items[i].classList.add('editing');
-      }
-    }
+    restoreEditingState();
   }
 
   function addLink(name, url, icon) {
@@ -104,24 +184,15 @@
     links.push({ name: name, url: url, icon: icon || 'icon/res/link.svg' });
     saveLinks(links);
     renderLinks(links);
-    if (isEditing) {
-      var items = document.querySelectorAll('.quick-link-item');
-      for (var i = 0; i < items.length; i++) {
-        items[i].classList.add('editing');
-      }
-    }
+    closeForm(); // auto-close add form after adding
+    restoreEditingState();
   }
 
   function resetLinks() {
     if (confirm('确认恢复默认快捷链接？自定义的链接将被清除。')) {
       saveLinks(defaultLinks);
       renderLinks(defaultLinks);
-      if (isEditing) {
-        var items = document.querySelectorAll('.quick-link-item');
-        for (var i = 0; i < items.length; i++) {
-          items[i].classList.add('editing');
-        }
-      }
+      restoreEditingState();
     }
   }
 
@@ -140,6 +211,8 @@
   window.linkManager = {
     toggleEdit: toggleEditMode,
     close: closeEdit,
+    closeFormOnly: closeForm,
+    exitEdit: exitEditMode,
     delete: deleteLink,
     add: addLink,
     reset: resetLinks,
@@ -162,6 +235,15 @@
     // Auto-add https:// if missing
     if (!/^https?:\/\//i.test(url)) {
       url = 'https://' + url;
+    }
+
+    // Check if URL already exists
+    var existingLinks = loadLinks();
+    for (var e = 0; e < existingLinks.length; e++) {
+      if (existingLinks[e].url === url) {
+        alert('该网址已存在，无需重复添加！');
+        return;
+      }
     }
 
     var icon = iconInput.value.trim();
