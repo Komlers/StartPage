@@ -1,22 +1,7 @@
 /* This file is used to style the Start Page */
 
-@font-face {
-    font-family: "小米兰亭";
-    src: url(fonts/Miui-Regular.ttf);
-}
-
-@font-face {
-    font-family: "小米兰亭 Light";
-    src: url(fonts/Miui-Light.ttf);
-}
-
-@font-face {
-    font-family: "小米兰亭 Bold";
-    src: url(fonts/Miui-Bold.ttf);
-}
-
 body {
-    font-family: "小米兰亭";
+    font-family: "MiSans";
     margin: 20px 10px;
     padding: 0;
     background-color: rgb(65, 65, 65);
@@ -28,7 +13,7 @@ body {
 
 @media (max-width: 720px) {
     body {
-        font-family: "小米兰亭";
+        font-family: "MiSans";
         margin: 20px 10px;
         padding: 0;
         background-color: rgb(65, 65, 65);
@@ -37,18 +22,6 @@ body {
         background-position: center;
         background-attachment: fixed;
     }
-}
-
-p {
-    font-family: "小米兰亭";
-}
-
-i {
-    font-family: "小米兰亭 Light";
-}
-
-b, h1, h2, h3, h4, h5, h6 {
-    font-family: "小米兰亭 Bold";
 }
 
 hr {
@@ -96,7 +69,7 @@ a:hover {
     background-color: rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     max-width: 300px; /* 根据需要调整最大宽度 */
-    font-family: "小米兰亭 Bold";
+    font-family: "MiSans Bold";
 }
 
 .title {
@@ -344,7 +317,7 @@ a:hover {
     outline: none;
     width: 100%;
     flex: 1;
-    font-family: "小米兰亭";
+    font-family: "MiSans";
 }
 
 .search-button {
