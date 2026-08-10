@@ -118,6 +118,7 @@
       for (var i = 0; i < items.length && i < 8; i++) {
         var div = document.createElement('div');
         div.className = 'suggestion-item';
+        div.style.animationDelay = i * 0.05 + 's';
         div.textContent = items[i];
         div.addEventListener('click', function () {
           input.value = this.textContent;
