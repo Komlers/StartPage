@@ -77,6 +77,8 @@ body {
     box-sizing: border-box;
     transition: box-shadow 0.3s, background 0.3s;
     position: relative;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .search-container:focus-within {
