@@ -2,6 +2,12 @@
    Dan_Evan's Start Page - Stylesheet
    ============================================================ */
 
+/* Disable scroll anchoring to prevent entrance animations from
+   causing cumulative downward scroll drift on each page refresh */
+html {
+    overflow-anchor: none;
+}
+
 body {
     font-family: "MiSans", sans-serif;
     margin: 20px 10px;
