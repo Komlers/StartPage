@@ -191,4 +191,62 @@
     }
   })();
 
+  // ==================== 6. Set as Default New Tab ====================
+
+  window.setAsDefault = function () {
+    var urlInput = document.getElementById('default-page-url');
+    var form = document.getElementById('default-setup-form');
+    if (urlInput) urlInput.value = window.location.href;
+    if (form) form.classList.add('show');
+  };
+
+  window.closeDefaultSetup = function () {
+    var form = document.getElementById('default-setup-form');
+    if (form) form.classList.remove('show');
+  };
+
+  window.copyPageUrl = function () {
+    var urlInput = document.getElementById('default-page-url');
+    if (!urlInput) return;
+    urlInput.select();
+    urlInput.setSelectionRange(0, 99999);
+    var copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (e) {
+      copied = false;
+    }
+    if (!copied && navigator.clipboard) {
+      navigator.clipboard.writeText(urlInput.value).then(
+        function () {
+          showCopyFeedback(true);
+        },
+        function () {
+          showCopyFeedback(false);
+        }
+      );
+      return;
+    }
+    showCopyFeedback(copied);
+  };
+
+  function showCopyFeedback(success) {
+    var btn = document.querySelector('.default-modal-url .btn-save');
+    if (!btn) return;
+    var original = btn.textContent;
+    btn.textContent = success ? '已复制！' : '复制失败';
+    btn.style.backgroundColor = success ? '#27ae60' : '#e74c3c';
+    setTimeout(function () {
+      btn.textContent = original;
+      btn.style.backgroundColor = '';
+    }, 1500);
+  }
+
+  // Close modal when clicking overlay background
+  document.addEventListener('click', function (e) {
+    if (e.target.id === 'default-setup-form') {
+      closeDefaultSetup();
+    }
+  });
+
 })();

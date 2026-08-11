@@ -538,6 +538,72 @@ body {
     transform: scale(1.05);
 }
 
+/* Set as Default Button */
+.default-btn {
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 18px;
+    border: none;
+    background: linear-gradient(135deg, #448AFF, #2979ff);
+    color: white;
+    font-family: "MiSans", sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, transform 0.2s;
+    white-space: nowrap;
+}
+
+.default-btn:hover {
+    background: linear-gradient(135deg, #2979ff, #1565c0);
+    transform: scale(1.05);
+}
+
+/* Set as Default Setup Modal */
+.default-modal-box {
+    text-align: left !important;
+}
+
+.default-modal-title {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+
+.default-modal-desc {
+    margin: 0 0 12px;
+    font-size: 13px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.default-modal-list {
+    margin: 0 0 14px;
+    padding-left: 18px;
+    font-size: 13px;
+    color: #444;
+    line-height: 1.8;
+}
+
+.default-modal-list li strong {
+    color: #2979ff;
+}
+
+.default-modal-url {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.default-modal-url input {
+    flex: 1;
+    margin: 0;
+    font-size: 12px;
+    color: #555;
+}
+
 /* Add Link Form - Modal Overlay */
 .link-add-form {
     display: none;

@@ -82,6 +82,7 @@
 
     <!-- ==================== Edit Buttons (top-right) ==================== -->
     <div class="edit-btn-group">
+        <button class="default-btn" id="link-default-btn" onclick="setAsDefault()" title="设置为浏览器默认新建标签页">设为默认</button>
         <button class="edit-btn" id="link-edit-toggle" onclick="linkManager.toggleEdit()" title="编辑快捷链接">
             <img src="icon/res/edit.svg" alt="编辑图标" />
         </button>
@@ -108,6 +109,26 @@
         </div>
 
         <hr />
+
+        <!-- Set as Default New Tab - Setup Modal -->
+        <div class="link-add-form" id="default-setup-form">
+            <div class="modal-box default-modal-box">
+                <h3 class="default-modal-title">设为浏览器默认新建标签页</h3>
+                <p class="default-modal-desc">出于浏览器安全限制，网页无法自动修改浏览器设置。请按以下步骤手动设置：</p>
+                <ul class="default-modal-list">
+                    <li><strong>Chrome / Edge：</strong>设置 → 启动时 → 打开特定网页 → 添加此页面</li>
+                    <li><strong>Firefox：</strong>设置 → 主页 → 自定义网址 → 粘贴此页面</li>
+                    <li><strong>新建标签页：</strong>部分浏览器需通过扩展（如 New Tab Redirect）指定此页面</li>
+                </ul>
+                <div class="default-modal-url">
+                    <input type="text" id="default-page-url" readonly="" />
+                    <button class="btn-save" onclick="copyPageUrl()">复制网址</button>
+                </div>
+                <div class="form-actions">
+                    <button class="btn-cancel" onclick="closeDefaultSetup()">关闭</button>
+                </div>
+            </div>
+        </div>
 
         <div class="footer">
             <p>
