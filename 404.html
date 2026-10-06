@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<!-- 404 页面 - 遵循 MIT LICENSE -->
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="404 - 你访问的页面不存在或已被移除，请返回 Dan_Evan 的起始页。" />
+    <meta name="keywords" content="Dan_Evan,ElofHew,起始页,404,页面不存在" />
+    <meta name="author" content="Dan_Evan" />
+    <meta name="robots" content="noindex,follow" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://font.sec.miui.com/font/css?family=MiSans:400,700:MiSans" />
+    <title>404 Not Found | Dan_Evan's Start Page</title>
+    <style>
+        /* ============================================================
+           404 Page - Dan_Evan's Start Page
+           ============================================================ */
+
+        /* Disable scroll anchoring (consistent with the start page) */
+        html {
+            overflow-anchor: none;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "MiSans", sans-serif;
+            margin: 0;
+            padding: 20px 10px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(65, 65, 65);
+            background-image: url(/img/bg1.jpg);
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        @media (max-width: 720px) {
+            body {
+                background-image: url(/img/bg2.jpg);
+            }
+        }
+
+        /* Soft vignette so the text stays readable on bright photos */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 45%,
+                        rgba(0, 0, 0, 0.08),
+                        rgba(0, 0, 0, 0.38) 78%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ==================== Card ==================== */
+
+        .error-card {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 520px;
+            padding: 36px 28px 30px;
+            border-radius: 24px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            transition: background 0.4s, box-shadow 0.4s;
+            transform: translateZ(0);
+            will-change: transform;
+            animation: fadeInUp 0.7s ease-out both;
+        }
+
+        .error-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 12px 44px rgba(0, 0, 0, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* ==================== 404 Number ==================== */
+
+        .error-code {
+            font-size: clamp(76px, 20vw, 124px);
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 0.08em;
+            padding-left: 0.08em; /* 补偿字间距造成的视觉偏移 */
+            background: linear-gradient(135deg, #ffffff 0%, #cfe0ff 45%, #448AFF 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: #448AFF; /* 不支持背景剪裁时的回退色 */
+            filter: drop-shadow(0 6px 24px rgba(68, 138, 255, 0.45));
+            user-select: none;
+        }
+
+        /* ==================== Text ==================== */
+
+        .error-title {
+            margin: 14px 0 8px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: blanchedalmond;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+        }
+
+        .error-desc {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+        }
+
+        .error-path {
+            display: inline-block;
+            max-width: 100%;
+            margin: 14px 0 24px;
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            color: #5a4636;
+            background: linear-gradient(135deg,
+                        rgba(255, 228, 196, 0.9),
+                        rgba(255, 215, 175, 0.9));
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+            word-break: break-all;
+            overflow-wrap: anywhere;
+        }
+
+        /* ==================== Buttons ==================== */
+
+        .error-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            padding: 0 22px;
+            border: none;
+            border-radius: 999px;
+            font-family: "MiSans", sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.3s, transform 0.15s, box-shadow 0.3s, color 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #448AFF, #2979ff);
+            color: #ffffff;
+            box-shadow: 0 4px 16px rgba(68, 138, 255, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2979ff, #1565c0);
+            color: #ffffff;
+            text-decoration: none;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(68, 138, 255, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: scale(0.96);
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.75);
+            color: #5a4636;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: scale(1.05);
+        }
+
+        .btn-ghost:active {
+            transform: scale(0.96);
+        }
+
+        .btn:focus-visible,
+        a:focus-visible {
+            outline: 2px solid #ffffff;
+            outline-offset: 2px;
+        }
+
+        /* ==================== Footer ==================== */
+
+        .footer {
+            position: relative;
+            z-index: 1;
+            margin-top: 26px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+            animation: fadeIn 0.7s ease-out 0.35s both;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        .footer a,
+        .footer a:visited {
+            color: #cfe0ff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* ==================== Responsive ==================== */
+
+        @media (max-width: 480px) {
+            .error-card {
+                padding: 28px 18px 24px;
+                border-radius: 20px;
+            }
+
+            .error-title {
+                font-size: 20px;
+            }
+
+            .error-desc {
+                font-size: 13px;
+            }
+
+            .btn {
+                height: 38px;
+                padding: 0 18px;
+                font-size: 13px;
+            }
+        }
+
+        /* ==================== Animations ==================== */
+
+        /* Respect reduced-motion preference for accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ==================== 404 Card ==================== -->
+    <main class="error-card">
+        <div class="error-code">404</div>
+        <h1 class="error-title">页面不见了</h1>
+        <p class="error-desc">你访问的页面不存在，或者已经被移到别的地方去了。</p>
+        <p class="error-path" id="reqPath">/</p>
+        <div class="error-actions">
+            <a class="btn btn-primary" href="https://home.danevan.top/">返回首页</a>
+            <button class="btn btn-ghost" type="button" onclick="goBack()">返回上一页</button>
+        </div>
+    </main>
+
+    <!-- ==================== Footer ==================== -->
+    <footer class="footer">
+        <p>
+            <a href="https://icp.gov.moe/?keyword=20240312" target="_blank" rel="noopener">萌ICP备20240312号</a><br />
+            &copy; Dan_Evan 2024 ~ 2026 All rights reserved.
+        </p>
+    </footer>
+
+    <!-- ==================== Scripts ==================== -->
+    <script>
+        /* 返回上一页；若无历史记录则回到首页 */
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                window.location.href = "/";
+            }
+        }
+
+        /* 在卡片中显示当前请求的路径，方便排查 */
+        (function () {
+            var el = document.getElementById("reqPath");
+            if (!el) {
+                return;
+            }
+            var raw = window.location.pathname
+                    + window.location.search
+                    + window.location.hash;
+            try {
+                raw = decodeURI(raw);
+            } catch (e) {
+                /* 忽略编码异常的 URI */
+            }
+            el.textContent = raw || "/";
+        })();
+    </script>
+</body>
+</html>
