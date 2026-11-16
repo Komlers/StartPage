@@ -36,15 +36,31 @@
             align-items: center;
             justify-content: center;
             background-color: rgb(65, 65, 65);
-            background-image: url(/img/bg1.jpg);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
             position: relative;
         }
 
+        /* Fixed background layer.
+           NOTE: Do NOT use `background-attachment: fixed` on <body>.
+           Chromium composites an attachment-fixed background into a separate,
+           non-scrolling layer, and `backdrop-filter` then samples that layer at a
+           stale/offset position. The result is white gradient banding that
+           "ghosts" across every frosted-glass surface and re-appears whenever the
+           compositor re-rasterises (e.g. on hover).
+           A fixed-position pseudo-element gives the identical visual result while
+           keeping backdrop sampling correct. */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: url(/img/bg1.jpg);
+            background-size: cover;
+            background-position: center;
+            pointer-events: none;
+        }
+
         @media (max-width: 720px) {
-            body {
+            body::after {
                 background-image: url(/img/bg2.jpg);
             }
         }
@@ -77,9 +93,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18),
                         inset 0 1px 0 rgba(255, 255, 255, 0.25);
             transition: background 0.4s, box-shadow 0.4s;
-            transform: translateZ(0);
-            will-change: transform;
-            animation: fadeInUp 0.7s ease-out both;
+            animation: fadeInUp 0.7s ease-out backwards;
         }
 
         .error-card:hover {
@@ -216,7 +230,7 @@
             line-height: 1.8;
             color: rgba(255, 255, 255, 0.85);
             text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
-            animation: fadeIn 0.7s ease-out 0.35s both;
+            animation: fadeIn 0.7s ease-out 0.35s backwards;
         }
 
         .footer p {
