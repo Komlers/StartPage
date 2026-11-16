@@ -13,14 +13,29 @@ body {
     margin: 20px 10px;
     padding: 0;
     background-color: rgb(65, 65, 65);
+}
+
+/* Fixed background layer.
+   NOTE: Do NOT use `background-attachment: fixed` on <body>.
+   Chromium composites an attachment-fixed background into a separate, non-scrolling
+   layer, and `backdrop-filter` then samples that layer at a stale/offset position.
+   The result is white gradient banding that "ghosts" across every frosted-glass
+   surface and re-appears whenever the compositor re-rasterises (e.g. on hover).
+   A fixed-position pseudo-element gives the identical visual result while keeping
+   backdrop sampling correct. */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
     background-image: url(img/bg1.jpg);
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
+    pointer-events: none;
 }
 
 @media (max-width: 720px) {
-    body {
+    body::before {
         background-image: url(img/bg2.jpg);
     }
 }
@@ -77,8 +92,6 @@ body {
     box-sizing: border-box;
     transition: box-shadow 0.3s, background 0.3s;
     position: relative;
-    transform: translateZ(0);
-    will-change: transform;
 }
 
 .search-container:focus-within {
@@ -232,7 +245,6 @@ body {
     overflow-y: auto;
     display: none;
     padding: 4px 0 4px;
-    transform: translateZ(0);
 }
 
 .search-suggestions.active {
@@ -250,7 +262,7 @@ body {
     align-items: center;
     gap: 10px;
     text-shadow: 0 1px 2px rgba(0,0,0,0.15);
-    animation: suggestionIn 0.3s ease-out both;
+    animation: suggestionIn 0.3s ease-out backwards;
 }
 
 .search-suggestions .suggestion-item::before {
@@ -769,26 +781,35 @@ a:hover {
 
 /* ==================== Page Entrance Animations ==================== */
 
+/* NOTE: fill-mode is `backwards`, NOT `both`.
+   `both` keeps the final keyframe applied forever, so every animated element
+   would permanently retain `transform: translateY(0)`. A retained transform turns
+   the element into a render-surface boundary, which makes Chromium sample the
+   `backdrop-filter` backdrop from a stale/offset buffer — that is what produced
+   the white gradient banding across the frosted search bar.
+   `backwards` only applies the from-state during the animation delay and then
+   releases the element back to its natural (transform-free) style. */
+
 .title-section {
-    animation: fadeInUp 0.7s ease-out both;
+    animation: fadeInUp 0.7s ease-out backwards;
 }
 
 .search {
-    animation: fadeInUp 0.7s ease-out 0.1s both;
+    animation: fadeInUp 0.7s ease-out 0.1s backwards;
 }
 
 .header-section {
-    animation: fadeInUp 0.7s ease-out 0.2s both;
+    animation: fadeInUp 0.7s ease-out 0.2s backwards;
 }
 
 .card {
-    animation: fadeInUp 0.7s ease-out 0.3s both;
+    animation: fadeInUp 0.7s ease-out 0.3s backwards;
 }
 
 .quick-links {
-    animation: fadeInUp 0.7s ease-out 0.4s both;
+    animation: fadeInUp 0.7s ease-out 0.4s backwards;
 }
 
 .edit-btn-group {
-    animation: fadeIn 0.5s ease-out 0.5s both;
+    animation: fadeIn 0.5s ease-out 0.5s backwards;
 }
