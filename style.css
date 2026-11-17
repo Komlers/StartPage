@@ -40,6 +40,52 @@ body::before {
     }
 }
 
+/* ============================================================
+   Frosted glass — self-rendered blur (no backdrop-filter)
+   ============================================================
+   Chromium's `backdrop-filter` samples the composited backdrop from a
+   buffer that can be stale or misaligned, which produced white gradient
+   banding across the search bar whenever the compositor re-rasterised
+   (e.g. on hover). There is no reliable CSS-level workaround for that
+   sampling bug, so the frosted look is rebuilt from scratch:
+
+     .frosted          — the panel; clips its own blurred backdrop layer
+     .frosted::before  — a copy of the page background, blurred
+
+   The copy uses `background-attachment: fixed`, which anchors it to the
+   viewport exactly like `body::before` does — so it lines up pixel for
+   pixel with the page background (verified empirically). `filter: blur()`
+   is a plain element filter: it blurs the element's own content and never
+   touches the composited backdrop, so the banding cannot occur.
+
+   The layer is oversized (-80px) so the blur kernel always has real pixels
+   to sample — otherwise the blur fades out towards the panel edges. */
+
+.frosted {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+}
+
+.frosted::before {
+    content: '';
+    position: absolute;
+    inset: -80px;
+    z-index: -1;
+    background-image: url(img/bg1.jpg);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: blur(20px);
+    pointer-events: none;
+}
+
+@media (max-width: 720px) {
+    .frosted::before {
+        background-image: url(img/bg2.jpg);
+    }
+}
+
 /* ==================== Title Section ==================== */
 
 .title-section {
@@ -81,9 +127,6 @@ body::before {
     display: flex;
     align-items: center;
     margin: 10px 0;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-radius: 999px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     padding: 6px;
@@ -94,8 +137,22 @@ body::before {
     position: relative;
 }
 
+/* White tint layered over the blurred backdrop (see .frosted above). */
+.search-container::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+    transition: background 0.3s;
+}
+
 .search-container:focus-within {
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.search-container:focus-within::after {
     background: rgba(255, 255, 255, 0.2);
 }
 
@@ -236,15 +293,31 @@ body::before {
     left: 0;
     right: 0;
     z-index: 9999;
-    background: rgba(255, 255, 255, 0.42);
-    backdrop-filter: blur(35px);
-    -webkit-backdrop-filter: blur(35px);
     border-radius: 16px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    display: none;
+}
+
+.search-suggestions::before {
+    filter: blur(35px);
+}
+
+/* White tint layered over the blurred backdrop (see .frosted above). */
+.search-suggestions::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.42);
+    pointer-events: none;
+}
+
+/* Inner scroller: the shell clips its blurred layer, so scrolling has to
+   live on an inner element. */
+.suggestions-scroll {
     max-height: 320px;
     overflow-y: auto;
-    display: none;
-    padding: 4px 0 4px;
+    padding: 4px 0;
 }
 
 .search-suggestions.active {
@@ -769,9 +842,9 @@ a:hover {
     position: fixed;
     z-index: 999999;
     padding: 6px 14px;
-    background: rgba(0, 0, 0, 0.75);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    /* No frosted blur here: the tooltip is a dark chip over a dark page, so a
+       blur is invisible while still adding a backdrop-sampling surface. */
+    background: rgba(0, 0, 0, 0.82);
     color: #fff;
     font-size: 13px;
     font-family: "MiSans", sans-serif;
