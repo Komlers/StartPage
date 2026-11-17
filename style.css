@@ -661,7 +661,23 @@ body::before {
     animation: fadeIn 0.25s ease-out;
 }
 
-/* TEMP-PLACEHOLDER-BUGFIX */
+/* The edit-mode dialog must not cover the quick-links area: the delete
+   buttons and the drag-to-sort handles live down there, and a full-screen
+   centred overlay swallowed every click on them.
+   So in edit mode the dialog is pinned near the top of the viewport, the
+   backdrop fades out towards the bottom (keeping the link grid bright and
+   legible) and it is click-through. */
+#link-add-form.show {
+    align-items: flex-start;
+    padding-top: 72px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.25) 45%, rgba(0, 0, 0, 0.08) 100%);
+    pointer-events: none;
+}
+
+/* Only the dialog itself captures clicks. */
+#link-add-form.show .modal-box {
+    pointer-events: auto;
+}
 
 .link-add-form .modal-box {
     background-color: rgba(255, 255, 255, 0.95);
