@@ -76,6 +76,7 @@
   (function () {
     var input = document.getElementById('searchInput');
     var container = document.getElementById('searchSuggestions');
+    var scroller = document.getElementById('suggestionsScroll');
     var debounceTimer;
 
     input.addEventListener('input', function () {
@@ -83,7 +84,7 @@
       var query = this.value.trim();
       if (query.length < 2) {
         container.classList.remove('active');
-        container.innerHTML = '';
+        scroller.innerHTML = '';
         return;
       }
       debounceTimer = setTimeout(function () {
@@ -109,7 +110,7 @@
     }
 
     function renderSuggestions(items) {
-      container.innerHTML = '';
+      scroller.innerHTML = '';
       if (!items || items.length === 0) {
         container.classList.remove('active');
         return;
@@ -125,7 +126,7 @@
           container.classList.remove('active');
           window.search();
         });
-        container.appendChild(div);
+        scroller.appendChild(div);
       }
     }
 
