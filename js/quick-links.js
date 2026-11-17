@@ -86,7 +86,12 @@
         items[i].draggable = true;
       }
     }
+    syncAnchors();
   }
+
+  // ==================== Link Edit Mode ====================
+
+  var isEditing = false;
 
   function renderLinks(links) {
     var container = document.getElementById('quick-links');
@@ -98,21 +103,46 @@
       div.className = 'quick-link-item';
       if (isEditing) div.draggable = true;
       div.setAttribute('data-index', i);
-      div.innerHTML =
-        '<button class="link-delete-btn" onclick="linkManager.delete(' +
-        i +
-        ')" title="删除">&times;</button>' +
-        '<img src="' +
-        link.icon +
-        '" alt="' +
-        link.name +
-        '" loading="lazy" onerror="this.src=\'icon/res/link.svg\'" />' +
-        '<br />' +
-        '<a href="' +
-        link.url +
-        '" target="_blank">' +
-        link.name +
-        '</a>';
+
+      // The whole card is a single anchor, so the icon and the label are
+      // both part of the click target (not just the text).
+      var anchor = document.createElement('a');
+      anchor.className = 'quick-link-anchor';
+      anchor.href = link.url;
+      anchor.target = '_blank';
+      anchor.title = link.name;
+      // Native link dragging would fight with our custom drag-to-sort.
+      anchor.draggable = false;
+
+      var img = document.createElement('img');
+      img.src = link.icon;
+      img.alt = link.name;
+      img.loading = 'lazy';
+      img.draggable = false;
+      img.onerror = function () {
+        this.src = 'icon/res/link.svg';
+      };
+
+      var label = document.createElement('span');
+      label.className = 'quick-link-name';
+      label.textContent = link.name;
+
+      anchor.appendChild(img);
+      anchor.appendChild(label);
+
+      var delBtn = document.createElement('button');
+      delBtn.className = 'link-delete-btn';
+      delBtn.title = '删除';
+      delBtn.innerHTML = '&times;';
+      delBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        linkManager.delete(parseInt(div.getAttribute('data-index'), 10));
+      });
+
+      div.appendChild(anchor);
+      div.appendChild(delBtn);
+
       // Drag events for sorting
       div.addEventListener('dragstart', onDragStart);
       div.addEventListener('dragover', onDragOver);
@@ -128,7 +158,24 @@
 
   // ==================== Link Edit Mode ====================
 
-  var isEditing = false;
+  // Keep the anchor's href in sync with the edit mode.
+  // In edit mode we strip the href so that:
+  //   1) clicking a card does not navigate away while editing, and
+  //   2) the browser does not start a native link-drag, which would
+  //      hijack our custom drag-to-sort interaction.
+  function syncAnchors() {
+    var links = loadLinks();
+    var items = document.querySelectorAll('.quick-link-item');
+    for (var i = 0; i < items.length; i++) {
+      var anchor = items[i].querySelector('.quick-link-anchor');
+      if (!anchor) continue;
+      if (isEditing) {
+        anchor.removeAttribute('href');
+      } else {
+        anchor.setAttribute('href', links[i].url);
+      }
+    }
+  }
 
   function toggleEditMode() {
     isEditing = !isEditing;
@@ -140,6 +187,7 @@
       items[i].classList.toggle('editing', isEditing);
       items[i].draggable = isEditing;
     }
+    syncAnchors();
 
     if (form) {
       form.classList.toggle('show', isEditing);
@@ -165,6 +213,7 @@
       items[i].classList.remove('editing');
       items[i].draggable = false;
     }
+    syncAnchors();
 
     if (form) form.classList.remove('show');
     if (doneBtn) doneBtn.style.display = 'none';
